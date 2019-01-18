@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portal.Application.Students;
+using Portal.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Portal.Web.Controllers
@@ -17,6 +18,13 @@ namespace Portal.Web.Controllers
         public async Task<IActionResult> Index(int id)
         {
             return Ok(await _studentService.GetByClass(id));
+        }
+
+        [Route("api/student")]
+        [HttpPost]
+        public async Task<IActionResult> Create(Student model)
+        {
+            return Ok(await _studentService.Add(model));
         }
     }
 }

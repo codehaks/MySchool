@@ -18,13 +18,13 @@ namespace Portal.Application.Students
             _db = db;
         }
 
-        public async Task<bool> Add(Student model)
+        public async Task<Student> Add(Student model)
         {
 
             var result = _db.Student.Add(model);
             await _db.SaveChangesAsync();
 
-            return true;
+            return result.Entity;
         }
 
         public async Task<Student> Get(int id)

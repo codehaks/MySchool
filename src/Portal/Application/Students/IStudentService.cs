@@ -6,7 +6,7 @@ namespace Portal.Application.Students
 {
     public interface IStudentService
     {
-        Task<bool> Add(Student model);
+        Task<Student> Add(Student model);
         Task<Student> Get(int id);
         Task<IList<Student>> GetAll();
         Task<IList<Student>> GetByClass(int classId);

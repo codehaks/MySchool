@@ -40,7 +40,7 @@
                 {{selectedClass.name}}
             </h5>
 
-            <a href="#" class="btn btn-success" v-on:click="showClassAddModal"> Add ...</a>
+            <a href="#" class="btn btn-success" v-on:click="showStudentAddModal"> Add ...</a>
 
             <div v-if="students.length<=0">
                 <p>No students found!</p>
@@ -77,7 +77,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Student</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -86,15 +86,15 @@
 
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input v-model="className" type="text" class="form-control" style="width:100%">
+                        <input v-model="studentName" type="text" class="form-control" style="width:100%">
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Location</label>
-                        <input v-model="classLocation" type="text" class="form-control" style="width:100%">
+                        <label>Age</label>
+                        <input v-model="studentAge" type="text" class="form-control" style="width:100%">
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Teacher</label>
-                        <input v-model="classTeacher" type="text" class="form-control" style="width:100%">
+                        <label >GPA</label>
+                        <input v-model="studentGpa" type="text" class="form-control" style="width:100%">
                     </div>
 
                 </div>
@@ -111,7 +111,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Class</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -162,10 +162,11 @@
                 selectedClass: {},
                                 
                 students: [],
-                studentSurnameName: "",
-                studentGivenName: "",
-                studentGivenName: "",
-                studentGivenName: "",
+                studentName: "",
+                studentAge: "",
+                studentGpa: "",
+
+                studentMode:"add"
 
             },
             created: function () {
@@ -175,13 +176,48 @@
             methods: {
 
                 saveStudentChanges: function () {
+                    if (this.studentMode == "add") {
+                        this.addStudent();
+                    } else {
+                        //this.updateClass();
+                    }
+                },
+
+                showStudentAddModal: function () {
+                    studnetMode: "add";
+                    $('#addStudent').modal('show');
+                },
+
+                addStudent: function () {
+                    var vm = this;
+
+                    var newStudent = {
+                        classId:vm.classId,
+                        name: vm.studentName,
+                        age: vm.studentAge,
+                        gpa: vm.studentGpa
+                    }
+
+                    $.ajax({ url: "/api/student", data: newStudent, method: "POST" })
+                        .done(function (data) {
+                            newStudent.id = data.id;
+                            vm.students.splice(0, 0, newStudent);
+                            toastr.success("New student created.");
+                        }).fail(function () {
+                            toastr.error("Can not add new student!");
+                        }).always(function () {
+                            vm.clearData();
+                        });
+
+                    $('#addStudent').modal('hide');
 
                 },
 
                 getStudents: function (item) {
                     var vm = this;
                     vm.selectedClass = item;
-                    //console.log(item.id);
+                    vm.classId = item.id;
+
                     $.ajax({ url: "/api/student/" + item.id, method: "GET" })
                         .done(function (data) {
                             vm.students = data;
@@ -191,7 +227,7 @@
                 },
 
                 showClassAddModal: function () {
-                    classMode: "add";
+                    classMode= "add";
                     $('#addClass').modal('show');
                 },
                 editClass: function (item, index) {
