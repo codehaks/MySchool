@@ -1,42 +1,42 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Portal.Domain.Entities;
 using Portal.Persistance;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Portal.Application.Classes
+namespace Portal.Application.Students
 {
-    public class ClassService : IClassService
+    public class StudentService
     {
         private readonly PortalDbContext _db;
-        private readonly IMapper _mapper;
 
-        public ClassService(PortalDbContext db)
+        public StudentService(PortalDbContext db)
         {
             _db = db;
         }
 
-        public async Task<bool> Add(Class model)
+        public async Task<bool> Add(Student model)
         {
 
-            var result = _db.Class.Add(model);
+            var result = _db.Student.Add(model);
             await _db.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<Class> Get(int id)
+        public async Task<Student> Get(int id)
         {
-            return await _db.Class.FindAsync(id);
+            return await _db.Student.FindAsync(id);
         }
 
-        public async Task<IList<Class>> GetAll()
+        public async Task<IList<Student>> GetAll()
         {
-            return await _db.Class.ToListAsync();
+            return await _db.Student.ToListAsync();
         }
 
-        public async Task<bool> Remove(Class model)
+        public async Task<bool> Remove(Student model)
         {
             _db.Entry(model).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
@@ -50,7 +50,5 @@ namespace Portal.Application.Classes
             await _db.SaveChangesAsync();
             return true;
         }
-
-
     }
 }
