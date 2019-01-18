@@ -9,11 +9,10 @@ namespace Portal.Persistance.Configs
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
-            builder.Property(p => p.GivenName).HasMaxLength(20).IsRequired();
-            builder.Property(p => p.SureName).HasMaxLength(20).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(20).IsRequired();
             builder.Property(p => p.Age).IsRequired();
 
-            builder.HasKey(s => new { s.ClassId, s.SureName });
+            builder.HasKey(s => new { s.ClassId, s.Name });
         }
     }
 }

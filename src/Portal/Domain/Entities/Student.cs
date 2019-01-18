@@ -7,8 +7,7 @@
         public int ClassId { get; set; }
         public Class Class { get; set; }
 
-        public string GivenName { get; set; }
-        public string SureName { get; set; }
+        public string Name { get; set; }
 
         public byte Age { get; set; }
 
