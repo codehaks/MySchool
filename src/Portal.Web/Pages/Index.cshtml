@@ -3,34 +3,100 @@
     ViewData["Title"] = "Home";
 }
 
-<h2>Welcome</h2>
-<hr />
-
 <div id="app">
 
+    <a href="#" class="btn btn-success" v-on:click="showClassAddModal"> Add ...</a>
 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Teacher</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tr v-for="(item,index) in classes">
+            <td>{{index+1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.location}}</td>
+            <td>{{item.teacher}}</td>
+            <td>
+                @*<a href="#" class="btn btn-danger" v-on:click="removeBug(bug,index)">Remove</a>
+                    <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
+            </td>
+        </tr>
+    </table>
 
 </div>
 
 
-@section scripts{ 
+
+<!-- Modal -->
+<div class="modal fade" id="addClass" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input v-model="className" type="text" class="form-control" style="width:100%">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Description</label>
+                    <input v-model="classLocation" name="Description" type="text" class="form-control" style="width:100%">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Description</label>
+                    <input v-model="classTeacher" name="Description" type="text" class="form-control" style="width:100%">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
 
     <script>
         var app = new Vue({
             el: "#app",
             data: {
                 classes: [],
+
+                className: "",
+                classLocation: "",
+                classTeacher: "",
+
                 students: [],
             },
+            created: function () {
+                this.getClasses();
+
+            },
             methods: {
+                showClassAddModal: function () {
+                    $('#addClass').modal('show');
+                },
                 getClasses: function () {
                     var vm = this;
                     $.ajax({ url: "/api/class", method: "GET" })
                         .done(function (data) {
-                            vm.bugs = data;
-                            toastr.success("All bugs loaded.");
+                            vm.classes = data;
                         }).fail(function () {
-                            toastr.error("Can not load bugs!");
+                            toastr.error("Cannot load classes!");
                         });
                 }
             }
