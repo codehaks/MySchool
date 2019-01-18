@@ -13,7 +13,7 @@ namespace Portal.Web.Controllers
             _studentService = studentService;
         }
 
-        [Route("api/studnet/{id}")]
+        [Route("api/student/{id}")]
         public async Task<IActionResult> Index(int id)
         {
             return Ok(await _studentService.GetByClass(id));

@@ -5,31 +5,68 @@
 
 <div id="app">
 
-    <a href="#" class="btn btn-success" v-on:click="showClassAddModal"> Add ...</a>
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Teacher</th>
-                <th></th>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Classes</h5>
+            <a href="#" class="btn btn-success" v-on:click="showClassAddModal"> Add ...</a>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Teacher</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr v-for="(item,index) in classes" v-on:click="getStudents(item)" style="cursor:pointer">
+                <td>{{index+1}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.location}}</td>
+                <td>{{item.teacher}}</td>
+                <td>
+                    <a href="#" class="btn btn-danger" v-on:click="removeClass(item,index)">Remove</a>
+                    <a href="#" class="btn btn-primary" v-on:click="editClass(item,index)">Edit</a>
+                </td>
             </tr>
-        </thead>
-        <tr v-for="(item,index) in classes">
-            <td>{{index+1}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.location}}</td>
-            <td>{{item.teacher}}</td>
-            <td>
-                <a href="#" class="btn btn-danger" v-on:click="removeClass(item,index)">Remove</a>
-                <a href="#" class="btn btn-primary" v-on:click="editClass(item,index)">Edit</a>
-            </td>
-        </tr>
-    </table>
+        </table>
+    </div>
+    <br />
+    <div class="card" v-show="selectedClass.name!=null">
+        <div class="card-body">
+
+            <h5 class="card-title">
+                {{selectedClass.name}}
+            </h5>
 
 
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>GivenName</th>
+                    <th>SureName</th>
+                    <th>Age</th>
+                    <th>GPA</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr v-for="(student,index) in students">
+                <td>{{index+1}}</td>
+                <td>{{student.givenName}}</td>
+                <td>{{student.sureName}}</td>
+                <td>{{student.age}}</td>
+                <td>{{student.gpa}}</td>
+                <td>
+                    @*<a href="#" class="btn btn-danger" v-on:click="removeBug(bug,index)">Remove</a>
+                    <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="addClass" tabindex="-1" role="dialog">
@@ -68,9 +105,6 @@
 
 </div>
 
-
-
-
 @section scripts{
 
     <script>
@@ -87,6 +121,8 @@
 
                 classMode: "add",
 
+                selectedClass: {},
+
                 students: [],
             },
             created: function () {
@@ -94,26 +130,36 @@
 
             },
             methods: {
+
+                getStudents: function (item) {
+                    var vm = this;
+                    vm.selectedClass = item;
+                    //console.log(item.id);
+                    $.ajax({ url: "/api/student/" + item.id, method: "GET" })
+                        .done(function (data) {
+                            vm.students = data;
+                        }).fail(function () {
+                            toastr.error("Can not load students!");
+                        });
+                },
+
                 showClassAddModal: function () {
                     classMode: "add";
                     $('#addClass').modal('show');
                 },
+                editClass: function (item, index) {
 
-                editClass:
-                    function (item, index) {
+                    this.className = item.name;
+                    this.classLocation = item.location;
+                    this.classTeacher = item.teacher;
 
-                        this.className = item.name;
-                        this.classLocation = item.location;
-                        this.classTeacher = item.teacher;
+                    this.classIndex = index;
+                    this.classId = item.id;
 
-                        this.classIndex = index;
-                        this.classId = item.id;
+                    this.classMode = "edit";
 
-                        this.classMode = "edit";
-
-                        $('#addClass').modal('show');
-                    },
-
+                    $('#addClass').modal('show');
+                },
                 removeClass: function (item, index) {
                     var vm = this;
 
