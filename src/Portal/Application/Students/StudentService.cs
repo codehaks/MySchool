@@ -3,12 +3,13 @@ using Portal.Domain.Entities;
 using Portal.Persistance;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Portal.Application.Students
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         private readonly PortalDbContext _db;
 
@@ -34,6 +35,11 @@ namespace Portal.Application.Students
         public async Task<IList<Student>> GetAll()
         {
             return await _db.Student.ToListAsync();
+        }
+
+        public async Task<IList<Student>> GetByClass(int classId)
+        {
+            return await _db.Student.Where(s=>s.ClassId==classId).ToListAsync();
         }
 
         public async Task<bool> Remove(Student model)

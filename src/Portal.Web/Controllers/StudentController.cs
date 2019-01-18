@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Portal.Application.Students;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Portal.Web.Controllers
 {
     public class StudentController : Controller
     {
-        public IActionResult Index()
+        private readonly IStudentService _studentService;
+
+        public StudentController(IStudentService studentService)
         {
-            return View();
+            _studentService = studentService;
+        }
+
+        [Route("api/studnet/{id}")]
+        public async Task<IActionResult> Index(int id)
+        {
+            return Ok(await _studentService.GetByClass(id));
         }
     }
 }

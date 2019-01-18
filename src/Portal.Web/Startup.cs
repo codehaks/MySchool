@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Portal.Application.Classes;
+using Portal.Application.Students;
 using Portal.Persistance;
 
 namespace Portal.Web
@@ -26,6 +27,7 @@ namespace Portal.Web
             services.AddAutoMapper();
 
             services.AddTransient<IClassService, ClassService>();
+            services.AddTransient<IStudentService, StudentService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
