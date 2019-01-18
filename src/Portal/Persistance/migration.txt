@@ -1,0 +1,1 @@
+﻿Add-Migration  InitDb -Project Portal -OutputDir Persistance/Migrations
