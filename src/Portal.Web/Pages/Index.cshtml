@@ -6,3 +6,38 @@
 <h2>Welcome</h2>
 <hr />
 
+<div id="app">
+
+
+
+</div>
+
+
+@section scripts{ 
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                classes: [],
+                students: [],
+            },
+            methods: {
+                getClasses: function () {
+                    var vm = this;
+                    $.ajax({ url: "/api/class", method: "GET" })
+                        .done(function (data) {
+                            vm.bugs = data;
+                            toastr.success("All bugs loaded.");
+                        }).fail(function () {
+                            toastr.error("Can not load bugs!");
+                        });
+                }
+            }
+
+
+        });
+    </script>
+
+}
+
