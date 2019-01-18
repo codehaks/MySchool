@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Portal.Application.Classes;
+using Portal.Domain.Entities;
 
 namespace Portal.Web.Controllers
 {
@@ -21,6 +22,13 @@ namespace Portal.Web.Controllers
         public async Task<IActionResult> Index()
         {
             return Ok(await _classService.GetAll());
+        }
+
+        [Route("api/class")]
+        [HttpPost]
+        public async Task<IActionResult> Create(Class model)
+        {
+            return Ok(await _classService.Add(model));
         }
     }
 }

@@ -29,43 +29,46 @@
         </tr>
     </table>
 
-</div>
 
 
-
-<!-- Modal -->
-<div class="modal fade" id="addClass" tabindex="-1" role="dialog" >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input v-model="className" type="text" class="form-control" style="width:100%">
+    <!-- Modal -->
+    <div class="modal fade" id="addClass" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="lastName">Description</label>
-                    <input v-model="classLocation" name="Description" type="text" class="form-control" style="width:100%">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Description</label>
-                    <input v-model="classTeacher" name="Description" type="text" class="form-control" style="width:100%">
-                </div>
+                <div class="modal-body">
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input v-model="className" type="text" class="form-control" style="width:100%">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Location</label>
+                        <input v-model="classLocation" type="text" class="form-control" style="width:100%">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Teacher</label>
+                        <input v-model="classTeacher" type="text" class="form-control" style="width:100%">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addClass">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
+
+
 </div>
+
+
 
 
 @section scripts{
@@ -90,6 +93,28 @@
                 showClassAddModal: function () {
                     $('#addClass').modal('show');
                 },
+                addClass: function () {
+                    var vm = this;
+
+                    var newClass = {
+                        name: vm.className,
+                        location: vm.classLocation,
+                        teacher: vm.classTeacher
+                    }
+
+                    $.ajax({ url: "/api/class", data: newClass, method: "POST" })
+                        .done(function (data) {
+                            vm.classes.splice(0, 0, newClass);
+                            toastr.success("New class added.");
+                        }).fail(function () {
+                            toastr.error("Can not add new class!");
+                        }).always(function () {
+                            vm.clearData();
+                        });
+
+                    $('#addClass').modal('hide');
+
+                },
                 getClasses: function () {
                     var vm = this;
                     $.ajax({ url: "/api/class", method: "GET" })
@@ -98,6 +123,12 @@
                         }).fail(function () {
                             toastr.error("Cannot load classes!");
                         });
+                },
+                clearData: function () {
+                    var vm = this;
+                    vm.className = "";
+                    vm.classLocation = "";
+                    vm.classTeacher = "";
                 }
             }
 
