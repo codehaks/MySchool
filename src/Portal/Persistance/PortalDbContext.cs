@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Portal.Domain.Entities;
 using Portal.Persistance.Configs;
 
 namespace Portal.Persistance
@@ -15,6 +16,9 @@ namespace Portal.Persistance
             builder.ApplyConfiguration(new ClassConfig());
             builder.ApplyConfiguration(new StudentConfig());
         }
+
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<Student> Students { get; set; }
 
     }
 }
