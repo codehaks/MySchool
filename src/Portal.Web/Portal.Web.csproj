@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Portal\Portal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

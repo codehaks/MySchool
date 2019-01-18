@@ -14,6 +14,7 @@ namespace Portal.Persistance.Configs
             builder.Property(p => p.Name).HasMaxLength(20).IsRequired();
             builder.Property(p => p.Teacher).HasMaxLength(30).IsRequired();
             builder.Property(p => p.Location).HasMaxLength(50).IsRequired();
+            builder.HasMany(p => p.Students);
 
         }
     }

@@ -11,5 +11,7 @@ namespace Portal.Domain.Entities
         public string Location { get; set; }
         public string Teacher { get; set; }
 
+        public ICollection<Student> Students { get; set; }
+
     }
 }

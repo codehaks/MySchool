@@ -12,6 +12,8 @@ namespace Portal.Persistance.Configs
             builder.Property(p => p.GivenName).HasMaxLength(20).IsRequired();
             builder.Property(p => p.SureName).HasMaxLength(20).IsRequired();
             builder.Property(p => p.Age).IsRequired();
+
+            builder.HasKey(s => new { s.ClassId, s.SureName });
         }
     }
 }
