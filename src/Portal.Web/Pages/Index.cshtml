@@ -24,8 +24,7 @@
             <td>{{item.teacher}}</td>
             <td>
                 <a href="#" class="btn btn-danger" v-on:click="removeClass(item,index)">Remove</a>
-                @*
-        <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
+                <a href="#" class="btn btn-primary" v-on:click="editClass(item,index)">Edit</a>
             </td>
         </tr>
     </table>
@@ -60,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" v-on:click="addClass">Save changes</button>
+                    <button type="button" class="btn btn-primary" v-on:click="saveClassChanges">Save changes</button>
                 </div>
             </div>
         </div>
@@ -80,9 +79,13 @@
             data: {
                 classes: [],
 
+                classId: null,
+                classIndex: null,
                 className: "",
                 classLocation: "",
                 classTeacher: "",
+
+                classMode: "add",
 
                 students: [],
             },
@@ -92,8 +95,24 @@
             },
             methods: {
                 showClassAddModal: function () {
+                    classMode: "add";
                     $('#addClass').modal('show');
                 },
+
+                editClass:
+                    function (item, index) {
+
+                        this.className = item.name;
+                        this.classLocation = item.location;
+                        this.classTeacher = item.teacher;
+
+                        this.classIndex = index;
+                        this.classId = item.id;
+
+                        this.classMode = "edit";
+
+                        $('#addClass').modal('show');
+                    },
 
                 removeClass: function (item, index) {
                     var vm = this;
@@ -109,6 +128,39 @@
                         }).fail(function () {
                             toastr.error("Can not remove this class!");
                         });
+                },
+                saveClassChanges: function () {
+                    if (this.classMode == "add") {
+                        this.addClass();
+                    } else {
+                        this.updateClass()
+                    }
+                },
+                updateClass: function () {
+                    var vm = this;
+
+                    var existingClass = {
+                        id: vm.classId,
+                        name: vm.className,
+                        location: vm.classLocation,
+                        teacher: vm.classTeacher
+
+                    }
+
+                    $.ajax({ url: "/api/class", data: existingClass, method: "PUT" })
+                        .done(function () {
+                            vm.classes[vm.classIndex].name = vm.className;
+                            vm.classes[vm.classIndex].location = vm.classLocation;
+                            vm.classes[vm.classIndex].teacher = vm.classTeacher;
+
+                            toastr.success("Class updated.");
+                        }).fail(function () {
+                            toastr.error("Can not update this class.");
+                        }).always(function () {
+                            vm.clearData();
+                        });
+
+                    $('#addClass').modal('hide');
                 },
                 addClass: function () {
                     var vm = this;

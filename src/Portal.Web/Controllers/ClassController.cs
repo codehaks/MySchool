@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Portal.Application.Classes;
 using Portal.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace Portal.Web.Controllers
 {
@@ -37,5 +34,14 @@ namespace Portal.Web.Controllers
         {
             return Ok(await _classService.Remove(model));
         }
+
+        [Route("api/class")]
+        [HttpPut]
+        public async Task<IActionResult> Update(Class model)
+        {
+            return Ok(await _classService.Update(model));
+        }
+
+
     }
 }
