@@ -52,8 +52,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>GivenName</th>
-                    <th>SureName</th>
+                    <th>Name</th>
                     <th>Age</th>
                     <th>GPA</th>
                     <th></th>
@@ -61,8 +60,7 @@
             </thead>
             <tr v-for="(student,index) in students" v-bind:class="{ 'bg-success text-white': student.gpa>3.2 }">
                 <td>{{index+1}}</td>
-                <td>{{student.givenName}}</td>
-                <td>{{student.sureName}}</td>
+                <td>{{student.name}}</td>
                 <td>{{student.age}}</td>
                 <td>{{student.gpa}}</td>
                 <td>
@@ -176,6 +174,10 @@
             },
             methods: {
 
+                saveStudentChanges: function () {
+
+                },
+
                 getStudents: function (item) {
                     var vm = this;
                     vm.selectedClass = item;
@@ -264,6 +266,7 @@
 
                     $.ajax({ url: "/api/class", data: newClass, method: "POST" })
                         .done(function (data) {
+                            newClass.id = data.id;
                             vm.classes.splice(0, 0, newClass);
                             toastr.success("New class created.");
                         }).fail(function () {

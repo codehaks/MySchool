@@ -17,13 +17,13 @@ namespace Portal.Application.Classes
             _db = db;
         }
 
-        public async Task<bool> Add(Class model)
+        public async Task<Class> Add(Class model)
         {
 
             var result = _db.Class.Add(model);
             await _db.SaveChangesAsync();
 
-            return true;
+            return result.Entity;
         }
 
         public async Task<Class> Get(int id)
