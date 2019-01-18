@@ -22,6 +22,7 @@ namespace Portal.Application.Classes
 
             var result = _db.Class.Add(model);
             await _db.SaveChangesAsync();
+
             return true;
         }
 
@@ -33,6 +34,13 @@ namespace Portal.Application.Classes
         public async Task<IList<Class>> GetAll()
         {
             return await _db.Class.ToListAsync();
+        }
+
+        public async Task<bool> Remove(Class model)
+        {
+            _db.Entry(model).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> Update(Class model)

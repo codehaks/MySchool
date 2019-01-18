@@ -23,8 +23,9 @@
             <td>{{item.location}}</td>
             <td>{{item.teacher}}</td>
             <td>
-                @*<a href="#" class="btn btn-danger" v-on:click="removeBug(bug,index)">Remove</a>
-                    <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
+                <a href="#" class="btn btn-danger" v-on:click="removeClass(item,index)">Remove</a>
+                @*
+        <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
             </td>
         </tr>
     </table>
@@ -93,6 +94,22 @@
                 showClassAddModal: function () {
                     $('#addClass').modal('show');
                 },
+
+                removeClass: function (item, index) {
+                    var vm = this;
+
+                    var classToDelete = {
+                        id: item.id
+                    }
+
+                    $.ajax({ url: "/api/class", data: classToDelete, method: "DELETE" })
+                        .done(function (data) {
+                            vm.classes.splice(index, 1);
+                            toastr.success("class removed");
+                        }).fail(function () {
+                            toastr.error("Can not remove this class!");
+                        });
+                },
                 addClass: function () {
                     var vm = this;
 
@@ -105,7 +122,7 @@
                     $.ajax({ url: "/api/class", data: newClass, method: "POST" })
                         .done(function (data) {
                             vm.classes.splice(0, 0, newClass);
-                            toastr.success("New class added.");
+                            toastr.success("New class created.");
                         }).fail(function () {
                             toastr.error("Can not add new class!");
                         }).always(function () {

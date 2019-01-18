@@ -30,5 +30,12 @@ namespace Portal.Web.Controllers
         {
             return Ok(await _classService.Add(model));
         }
+
+        [Route("api/class")]
+        [HttpDelete]
+        public async Task<IActionResult> Remove(Class model)
+        {
+            return Ok(await _classService.Remove(model));
+        }
     }
 }
