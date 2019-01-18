@@ -17,8 +17,8 @@ namespace Portal.Persistance
             builder.ApplyConfiguration(new StudentConfig());
         }
 
-        public DbSet<Class> Classes { get; set; }
-        public DbSet<Student> Students { get; set; }
+        public DbSet<Class> Class { get; set; }
+        public DbSet<Student> Student { get; set; }
 
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Portal.Application.Classes;
 using Portal.Persistance;
 
 namespace Portal.Web
@@ -23,6 +24,9 @@ namespace Portal.Web
                 .AddEntityFrameworkStores<PortalDbContext>();
 
             services.AddAutoMapper();
+
+            services.AddTransient<IClassService, ClassService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
