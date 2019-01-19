@@ -151,31 +151,25 @@
             el: "#app",
             data: {
                 classes: [],
-
                 classId: null,
                 classIndex: null,
                 className: "",
                 classLocation: "",
                 classTeacher: "",
-
                 classMode: "add",
 
                 selectedClass: {},
-
                 students: [],
                 studentName: "",
                 studentAge: "",
                 studentGpa: "",
                 studentIndex:null,
                 studentMode: "add"
-
             },
             created: function () {
                 this.getClasses();
-
             },
             methods: {
-
                 saveStudentChanges: function () {
                     if (this.studentMode == "add") {
                         this.addStudent();
@@ -183,7 +177,6 @@
                         this.updateStudent();
                     }
                 },
-
                 showStudentAddModal: function () {
                     studnetMode: "add";
                     $('#addStudent').modal('show');
