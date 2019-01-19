@@ -201,9 +201,9 @@
 
                     $.ajax({ url: "/api/student", data: existingStudent, method: "PUT" })
                         .done(function () {
-                            vm.classes[vm.studentIndex].name = vm.studentName;
-                            vm.classes[vm.studentIndex].age = vm.studentAge;
-                            vm.classes[vm.studentIndex].gpa = vm.studentGpa;
+                            vm.students[vm.studentIndex].name = vm.studentName;
+                            vm.students[vm.studentIndex].age = vm.studentAge;
+                            vm.students[vm.studentIndex].gpa = vm.studentGpa;
 
                             toastr.success("Student updated.");
                         }).fail(function () {
