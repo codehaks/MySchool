@@ -24,7 +24,17 @@ namespace Portal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Student model)
         {
-            return Ok(await _studentService.Add(model));
+            try
+            {
+                var result=await _studentService.Add(model);
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [Route("api/student")]

@@ -20,7 +20,11 @@ namespace Portal.Application.Students
 
         public async Task<Student> Add(Student model)
         {
-
+            var alreadyExists = await _db.Student.FirstOrDefaultAsync(s=>s.ClassId==model.ClassId && s.Name==model.Name);
+            if (alreadyExists!=null)
+            {
+                throw new Exception("User already exists");
+            }
             var result = _db.Student.Add(model);
             await _db.SaveChangesAsync();
 

@@ -206,8 +206,8 @@
                             vm.students[vm.studentIndex].gpa = vm.studentGpa;
 
                             toastr.success("Student updated.");
-                        }).fail(function () {
-                            toastr.error("Can not update this Student.");
+                        }).fail(function (error) {
+                            toastr.error(error.responseText);
                         }).always(function () {
                             vm.clearData();
                         });
@@ -260,8 +260,8 @@
                             newStudent.id = data.id;
                             vm.students.splice(0, 0, newStudent);
                             toastr.success("New student created.");
-                        }).fail(function () {
-                            toastr.error("Can not add new student!");
+                        }).fail(function (error) {
+                            toastr.error(error.responseText);
                         }).always(function () {
                             vm.clearData();
                         });
