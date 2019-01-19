@@ -9,10 +9,12 @@ namespace Portal.Web.Controllers
     public class ClassController : Controller
     {
         private readonly IClassService _classService;
+        private readonly ClassValidator _validator;
 
-        public ClassController(IClassService classService)
+        public ClassController(IClassService classService, ClassValidator validator)
         {
             _classService = classService;
+            _validator = validator;
         }
 
         [Route("api/class")]
@@ -25,6 +27,11 @@ namespace Portal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Class model)
         {
+            var validation=_validator.Validate(model);
+            if (!validation.IsValid)
+            {
+                return BadRequest(validation.Errors);
+            }
             return Ok(await _classService.Add(model));
         }
 

@@ -10,16 +10,18 @@ namespace Portal.Application.Classes
     public class ClassService : IClassService
     {
         private readonly PortalDbContext _db;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
+        private readonly ClassValidator _validator;
 
-        public ClassService(PortalDbContext db)
+        public ClassService(PortalDbContext db, ClassValidator validator)
         {
             _db = db;
+            _validator = validator;
         }
 
         public async Task<Class> Add(Class model)
         {
-
+            
             var result = _db.Class.Add(model);
             await _db.SaveChangesAsync();
 

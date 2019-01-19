@@ -28,6 +28,7 @@ namespace Portal.Web
 
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ClassValidator, ClassValidator>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

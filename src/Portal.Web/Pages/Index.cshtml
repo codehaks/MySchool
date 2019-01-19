@@ -362,8 +362,12 @@
                             newClass.id = data.id;
                             vm.classes.splice(0, 0, newClass);
                             toastr.success("New class created.");
-                        }).fail(function () {
-                            toastr.error("Can not add new class!");
+                        }).fail(function (errors) {
+                            console.log(errors);
+                            for (var i = 0; i < errors.responseJSON.length; i++) {
+                                toastr.error(errors.responseJSON[i].errorMessage);
+                            }
+                            
                         }).always(function () {
                             vm.clearData();
                         });
