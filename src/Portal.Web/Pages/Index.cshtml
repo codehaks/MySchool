@@ -93,7 +93,7 @@
                         <input v-model="studentAge" type="text" class="form-control" style="width:100%">
                     </div>
                     <div class="form-group">
-                        <label >GPA</label>
+                        <label>GPA</label>
                         <input v-model="studentGpa" type="text" class="form-control" style="width:100%">
                     </div>
 
@@ -160,13 +160,13 @@
                 classMode: "add",
 
                 selectedClass: {},
-                                
+
                 students: [],
                 studentName: "",
                 studentAge: "",
                 studentGpa: "",
 
-                studentMode:"add"
+                studentMode: "add"
 
             },
             created: function () {
@@ -192,7 +192,7 @@
                     var vm = this;
 
                     var newStudent = {
-                        classId:vm.classId,
+                        classId: vm.classId,
                         name: vm.studentName,
                         age: vm.studentAge,
                         gpa: vm.studentGpa
@@ -208,6 +208,8 @@
                         }).always(function () {
                             vm.clearData();
                         });
+
+                    this.clearData();
 
                     $('#addStudent').modal('hide');
 
@@ -227,7 +229,7 @@
                 },
 
                 showClassAddModal: function () {
-                    classMode= "add";
+                    classMode = "add";
                     $('#addClass').modal('show');
                 },
                 editClass: function (item, index) {
@@ -328,6 +330,11 @@
                     vm.className = "";
                     vm.classLocation = "";
                     vm.classTeacher = "";
+                    vm.studentName = "";
+                    vm.studentAge = "";
+                    vm.studentGpa = "";
+                    vm.classId = null;
+
                 }
             }
 
