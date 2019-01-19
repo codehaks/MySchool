@@ -49,9 +49,9 @@ namespace Portal.Application.Students
             return true;
         }
 
-        public async Task<bool> Update(Class model)
+        public async Task<bool> Update(Student model)
         {
-            _db.Class.Attach(model);
+            _db.Student.Attach(model);
             _db.Entry(model).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return true;

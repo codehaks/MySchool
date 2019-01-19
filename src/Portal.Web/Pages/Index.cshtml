@@ -64,8 +64,9 @@
                 <td>{{student.age}}</td>
                 <td>{{student.gpa}}</td>
                 <td>
-                    @*<a href="#" class="btn btn-danger" v-on:click="removeBug(bug,index)">Remove</a>
-                        <a href="#" class="btn btn-primary" v-on:click="editBug(bug,index)">Edit</a>*@
+                    <a href="#" class="btn btn-danger" v-on:click="removeStudent(student,index)">Remove</a>
+                    <a href="#" class="btn btn-primary" v-on:click="editStudent(student,index)">Edit</a>
+
                 </td>
             </tr>
         </table>
@@ -165,7 +166,7 @@
                 studentName: "",
                 studentAge: "",
                 studentGpa: "",
-
+                studentIndex:null,
                 studentMode: "add"
 
             },
@@ -179,7 +180,7 @@
                     if (this.studentMode == "add") {
                         this.addStudent();
                     } else {
-                        //this.updateClass();
+                        this.updateStudent();
                     }
                 },
 
@@ -187,7 +188,63 @@
                     studnetMode: "add";
                     $('#addStudent').modal('show');
                 },
+                updateStudent: function () {
+                    var vm = this;
 
+                    var existingStudent = {
+                        classId: vm.classId,
+                        name: vm.studentName,
+                        age: vm.studentAge,
+                        gpa: vm.studentGpa
+
+                    }
+
+                    $.ajax({ url: "/api/student", data: existingStudent, method: "PUT" })
+                        .done(function () {
+                            vm.classes[vm.studentIndex].name = vm.studentName;
+                            vm.classes[vm.studentIndex].age = vm.studentAge;
+                            vm.classes[vm.studentIndex].gpa = vm.studentGpa;
+
+                            toastr.success("Student updated.");
+                        }).fail(function () {
+                            toastr.error("Can not update this Student.");
+                        }).always(function () {
+                            vm.clearData();
+                        });
+
+                    $('#addStudent').modal('hide');
+                },
+                editStudent: function (student,index) {
+                    this.studentName = student.name;
+                    this.studentAge = student.age;
+                    this.studentGpa= student.gpa;
+                    this.studentIndex = index;
+                    this.studentMode = "edit";
+
+                    $('#addStudent').modal('show');
+
+                },
+                removeStudent: function (student,index) {
+                    var sure = confirm('Are you sure?');
+                    if (!sure) {
+                        return;
+                    };
+
+                    var vm = this;
+                    var existingStudent = {
+                        classId: student.classId,
+                        name: student.name,
+                    }
+
+                    $.ajax({ url: "/api/student", data: existingStudent, method: "DELETE" })
+                        .done(function (data) {
+                            vm.students.splice(index, 1);
+                            toastr.success("Student removed.");
+                            
+                        }).fail(function () {
+                            toastr.error("Can not remove student");
+                        });
+                },
                 addStudent: function () {
                     var vm = this;
 
@@ -214,7 +271,6 @@
                     $('#addStudent').modal('hide');
 
                 },
-
                 getStudents: function (item) {
                     var vm = this;
                     vm.selectedClass = item;
@@ -227,7 +283,6 @@
                             toastr.error("Can not load students!");
                         });
                 },
-
                 showClassAddModal: function () {
                     classMode = "add";
                     $('#addClass').modal('show');
@@ -333,7 +388,7 @@
                     vm.studentName = "";
                     vm.studentAge = "";
                     vm.studentGpa = "";
-                    vm.classId = null;
+                    //vm.classId = null;
 
                 }
             }

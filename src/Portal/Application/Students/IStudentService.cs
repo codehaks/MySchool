@@ -11,6 +11,6 @@ namespace Portal.Application.Students
         Task<IList<Student>> GetAll();
         Task<IList<Student>> GetByClass(int classId);
         Task<bool> Remove(Student model);
-        Task<bool> Update(Class model);
+        Task<bool> Update(Student model);
     }
 }
