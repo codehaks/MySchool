@@ -7,6 +7,11 @@ namespace Portal.Persistance
 {
     public class PortalDbContext : DbContext
     {
+        public PortalDbContext()
+        {
+
+        }
+
         public PortalDbContext(DbContextOptions<PortalDbContext> options)
             : base(options)
         {

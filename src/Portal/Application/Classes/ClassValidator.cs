@@ -10,13 +10,13 @@ namespace Portal.Application.Classes
     {
         public ClassValidator()
         {
-            RuleFor(c => c.Location).NotNull().WithMessage("Class location is not specified");
+            RuleFor(c => c.Location).NotEmpty().WithMessage("Class location is not specified");
             RuleFor(c => c.Location).MaximumLength(50).WithMessage("Class location is too long");
 
-            RuleFor(c => c.Teacher).NotNull().WithMessage("Class teacher is not specified");
+            RuleFor(c => c.Teacher).NotEmpty().WithMessage("Class teacher is not specified");
             RuleFor(c => c.Teacher).MaximumLength(30).WithMessage("Class location is too long");
 
-            RuleFor(c => c.Name).NotNull().WithMessage("Class name is not specidied");
+            RuleFor(c => c.Name).NotEmpty().WithMessage("Class name is not specidied");
             RuleFor(c => c.Name).MaximumLength(20).WithMessage("Class location is too long");
 
         }
