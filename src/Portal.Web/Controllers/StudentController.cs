@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Portal.Application.Students;
 using Portal.Domain.Entities;
 using System.Threading.Tasks;
@@ -8,10 +9,12 @@ namespace Portal.Web.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentService _studentService;
+        private readonly ILogger _logger;
 
-        public StudentController(IStudentService studentService)
+        public StudentController(IStudentService studentService, ILogger<StudentController> logger)
         {
             _studentService = studentService;
+            _logger = logger;
         }
 
         [Route("api/student/{id}")]
@@ -26,15 +29,17 @@ namespace Portal.Web.Controllers
         {
             try
             {
-                var result=await _studentService.Add(model);
+                var result = await _studentService.Add(model);
+                _logger.LogInformation(model.ToString() + " Created");
                 return Ok(result);
             }
             catch (System.Exception ex)
             {
+                _logger.LogError(model.ToString() + $" not created with exception : {ex.Message}");
 
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
         [Route("api/student")]

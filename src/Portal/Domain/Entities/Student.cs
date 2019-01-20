@@ -13,5 +13,10 @@
 
         public float GPA { get; set; }
 
+        public override string ToString()
+        {
+            return $" ({ClassId},{Name}) with Age {Age} & GPA {GPA}";
+        }
+
     }
 }
